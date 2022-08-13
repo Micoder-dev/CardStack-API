@@ -1,10 +1,12 @@
 package com.example.cardstack_api;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,10 +50,22 @@ public class CardNewsAdapter extends BaseAdapter {
         // on below line we are initializing our variables and setting data to our variables.
         ((TextView) v.findViewById(R.id.text_view_title)).setText(newsData.get(position).getTitle());
         ((TextView) v.findViewById(R.id.text_view_desc)).setText(newsData.get(position).getDescription());
-        ((TextView) v.findViewById(R.id.text_view_published_date)).setText(newsData.get(position).getTime());
+        ((TextView) v.findViewById(R.id.text_view_published_date)).setText("Published Date:  "+newsData.get(position).getTime());
         ImageView imageUrl;
         imageUrl = v.findViewById(R.id.news_image);
         Glide.with(context).load(newsData.get(position).getImageUrl()).placeholder(R.drawable.news_logo).into(imageUrl);
+        Button readMoreBtn;
+        readMoreBtn = v.findViewById(R.id.readMoreBtn);
+        CardNewsModel currentItem = newsData.get(position);
+        readMoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("url", currentItem.getUrl());
+                context.startActivity(intent);
+            }
+        });
+
         return v;
     }
 }
